@@ -134,7 +134,10 @@ export default function Home() {
             基于 Next.js + Cloudflare Pages 部署
           </p>
           <p style={{ marginTop: '0.5rem', fontSize: '0.75rem' }}>
-            © 2024 PNG to WebP Converter | <a href="/about.html" style={{ color: '#64748b' }}>关于我们</a>
+            © 2025 PNG to WebP Converter | 
+            <a href="https://recordmind.com" target="_blank" rel="noopener noreferrer" style={{ color: '#64748b', textDecoration: 'none', marginLeft: '0.25rem' }}>
+              WorldWorld
+            </a>
           </p>
         </footer>
       </div>
