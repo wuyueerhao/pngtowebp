@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useCallback, useRef } from 'react'
+import JSZip from 'jszip'
 
 interface ConversionResult {
   originalFile: File
@@ -14,6 +15,7 @@ interface ConversionResult {
 export default function ImageConverter() {
   const [isDragging, setIsDragging] = useState(false)
   const [isConverting, setIsConverting] = useState(false)
+  const [isDownloading, setIsDownloading] = useState(false)
   const [progress, setProgress] = useState(0)
   const [results, setResults] = useState<ConversionResult[]>([])
   const [error, setError] = useState<string | null>(null)
@@ -173,6 +175,52 @@ export default function ImageConverter() {
     document.body.removeChild(link)
   }
 
+  const downloadAllAsZip = async () => {
+    if (results.length === 0) return
+
+    setIsDownloading(true)
+    setError(null)
+
+    try {
+      const zip = new JSZip()
+      
+      // 添加所有转换后的文件到 ZIP
+      for (const result of results) {
+        const originalName = result.originalFile.name
+        const nameWithoutExt = originalName.substring(0, originalName.lastIndexOf('.')) || originalName
+        const fileName = `${nameWithoutExt}.webp`
+        
+        // 将 Blob 添加到 ZIP
+        zip.file(fileName, result.convertedBlob)
+      }
+
+      // 生成 ZIP 文件
+      const zipBlob = await zip.generateAsync({ 
+        type: 'blob',
+        compression: 'DEFLATE',
+        compressionOptions: { level: 6 }
+      })
+      
+      // 创建下载链接
+      const link = document.createElement('a')
+      link.href = URL.createObjectURL(zipBlob)
+      link.download = `converted-images-${new Date().toISOString().slice(0, 10)}.zip`
+      document.body.appendChild(link)
+      link.click()
+      document.body.removeChild(link)
+      
+      // 清理 URL
+      URL.revokeObjectURL(link.href)
+      
+      setSuccess(`成功打包下载 ${results.length} 个文件！`)
+    } catch (error) {
+      console.error('批量下载失败:', error)
+      setError('批量下载失败，请重试')
+    } finally {
+      setIsDownloading(false)
+    }
+  }
+
   const clearResults = () => {
     // 清理 URL
     results.forEach(r => URL.revokeObjectURL(r.url))
@@ -253,22 +301,43 @@ export default function ImageConverter() {
       {/* 结果区域 */}
       {results.length > 0 && (
         <div style={{ background: 'white', borderRadius: '12px', padding: '1.5rem' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-            <h3 style={{ fontSize: '1.25rem', fontWeight: '600' }}>转换结果</h3>
-            <button
-              onClick={clearResults}
-              style={{
-                background: '#ef4444',
-                color: 'white',
-                border: 'none',
-                padding: '0.5rem 1rem',
-                borderRadius: '6px',
-                cursor: 'pointer',
-                fontSize: '0.875rem'
-              }}
-            >
-              清空
-            </button>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.5rem' }}>
+            <h3 style={{ fontSize: '1.25rem', fontWeight: '600' }}>转换结果 ({results.length})</h3>
+            <div style={{ display: 'flex', gap: '0.5rem' }}>
+              <button
+                onClick={downloadAllAsZip}
+                disabled={isDownloading}
+                style={{
+                  background: isDownloading ? '#9ca3af' : '#3b82f6',
+                  color: 'white',
+                  border: 'none',
+                  padding: '0.5rem 1rem',
+                  borderRadius: '6px',
+                  cursor: isDownloading ? 'not-allowed' : 'pointer',
+                  fontSize: '0.875rem',
+                  fontWeight: 600,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem'
+                }}
+              >
+                {isDownloading ? '📦 打包中...' : '📦 批量下载 ZIP'}
+              </button>
+              <button
+                onClick={clearResults}
+                style={{
+                  background: '#ef4444',
+                  color: 'white',
+                  border: 'none',
+                  padding: '0.5rem 1rem',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                  fontSize: '0.875rem'
+                }}
+              >
+                清空
+              </button>
+            </div>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -329,7 +398,7 @@ export default function ImageConverter() {
           </div>
 
           <div style={{ marginTop: '1rem', padding: '0.75rem', background: '#dbeafe', borderRadius: '6px', fontSize: '0.875rem', color: '#1e40af' }}>
-            💡 提示: 点击下载按钮保存转换后的 WebP 图片
+            💡 提示: 点击单个下载按钮保存图片，或使用&ldquo;批量下载 ZIP&rdquo;一次性下载所有转换后的 WebP 图片
           </div>
         </div>
       )}
