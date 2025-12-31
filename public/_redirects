@@ -1,0 +1,7 @@
+# Cloudflare Pages 重定向配置
+# SPA 路由支持
+/advanced /advanced.html 200
+/about /about.html 200
+
+# 404 页面
+/* /404.html 404

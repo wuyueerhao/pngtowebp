@@ -18,12 +18,19 @@ if ! wrangler whoami &> /dev/null; then
     exit 1
 fi
 
-# 构建项目
+# 构建项目（静态导出）
 echo "📦 构建项目..."
 npm run build
 
 if [ $? -ne 0 ]; then
     echo "❌ 构建失败"
+    exit 1
+fi
+
+# 检查输出目录
+if [ ! -d "out" ]; then
+    echo "❌ 输出目录 'out' 不存在"
+    echo "请确保 next.config.js 中配置了 output: 'export'"
     exit 1
 fi
 
@@ -33,7 +40,7 @@ PROJECT_NAME=${PROJECT_NAME:-png-to-webp}
 
 # 部署
 echo "⬆️  部署到 Cloudflare Pages..."
-wrangler pages deploy .next --project-name=$PROJECT_NAME
+wrangler pages deploy out --project-name=$PROJECT_NAME
 
 if [ $? -eq 0 ]; then
     echo "✅ 部署成功！"

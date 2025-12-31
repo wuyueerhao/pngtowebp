@@ -14,7 +14,7 @@ if [ ! -f "package.json" ]; then
 fi
 
 echo "📦 1. 清理旧构建..."
-rm -rf .next
+rm -rf .next out
 echo "✅ 清理完成"
 
 echo ""
@@ -30,12 +30,13 @@ echo "✅ 构建完成"
 
 echo ""
 echo "📁 3. 检查构建输出..."
-if [ -d ".next" ]; then
-    echo "✅ .next 目录存在"
-    echo "   文件数量: $(find .next -type f | wc -l)"
-    echo "   HTML 文件: $(find .next -name "*.html" | wc -l)"
+if [ -d "out" ]; then
+    echo "✅ out 目录存在"
+    echo "   文件数量: $(find out -type f | wc -l)"
+    echo "   HTML 文件: $(find out -name "*.html" | wc -l)"
 else
-    echo "❌ .next 目录不存在"
+    echo "❌ out 目录不存在"
+    echo "请检查 next.config.js 中是否配置了 output: 'export'"
     exit 1
 fi
 
@@ -49,12 +50,12 @@ echo "  - 访问: https://dash.cloudflare.com"
 echo "  - Workers & Pages → Create → Pages"
 echo "  - 选择: Connect to Git 或 Upload assets"
 echo "  - 构建命令: npm run build"
-echo "  - 输出目录: .next"
+echo "  - 输出目录: out"
 echo ""
 echo "选项 2: Wrangler CLI"
 echo "  - npm install -g wrangler"
 echo "  - wrangler login"
-echo "  - wrangler pages deploy .next --project-name=your-name"
+echo "  - wrangler pages deploy out --project-name=your-name"
 echo ""
 echo "选项 3: GitHub Actions"
 echo "  - git push origin main"
