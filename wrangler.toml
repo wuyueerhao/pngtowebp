@@ -1,0 +1,19 @@
+# Cloudflare Workers/Pages 配置
+# 如果需要使用 Workers 进行服务器端处理，可以使用此配置
+
+name = "png-to-webp-converter"
+compatibility_date = "2024-01-01"
+
+# Pages 项目配置
+[pages]
+build.command = "npm run build"
+build.directory = ".next"
+
+# 环境变量（可选）
+[vars]
+ENVIRONMENT = "production"
+
+# 如果需要使用 Workers 处理 API
+# [[routes]]
+# pattern = "api.yourdomain.com"
+# zone_name = "yourdomain.com"
