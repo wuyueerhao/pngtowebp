@@ -10,6 +10,8 @@ interface ConversionSettings {
   height?: number
   maintainAspectRatio: boolean
   originalAspectRatio?: number
+  canvasMode: 'resize' | 'canvas' // 新增：调整模式
+  canvasColor: string // 新增：画布背景色
 }
 
 interface AdvancedResult {
@@ -35,7 +37,9 @@ export default function AdvancedConverter() {
     quality: 0.9,
     resize: false,
     maintainAspectRatio: true,
-    originalAspectRatio: 1
+    originalAspectRatio: 1,
+    canvasMode: 'resize',
+    canvasColor: 'transparent'
   })
 
   // 处理宽度变化，自动计算高度
@@ -101,30 +105,86 @@ export default function AdvancedConverter() {
           // 处理尺寸调整
           if (settings.resize) {
             if (settings.width && settings.height) {
-              if (settings.maintainAspectRatio) {
-                const ratio = Math.min(settings.width / img.width, settings.height / img.height)
-                targetWidth = img.width * ratio
-                targetHeight = img.height * ratio
-              } else {
+              if (settings.canvasMode === 'canvas') {
+                // 画布模式：创建指定尺寸的画布，图片等比缩放并居中
                 targetWidth = settings.width
                 targetHeight = settings.height
+                
+                // 计算图片在画布中的实际尺寸（90%规则）
+                const maxCanvasSize = Math.max(settings.width, settings.height)
+                const maxImageSize = Math.max(img.width, img.height)
+                const targetMaxSize = maxCanvasSize * 0.9
+                
+                const scale = targetMaxSize / maxImageSize
+                const scaledWidth = img.width * scale
+                const scaledHeight = img.height * scale
+                
+                canvas.width = targetWidth
+                canvas.height = targetHeight
+                
+                // 设置背景色
+                if (settings.canvasColor !== 'transparent') {
+                  ctx.fillStyle = settings.canvasColor
+                  ctx.fillRect(0, 0, targetWidth, targetHeight)
+                }
+                
+                // 计算居中位置
+                const x = (targetWidth - scaledWidth) / 2
+                const y = (targetHeight - scaledHeight) / 2
+                
+                // 高质量绘制
+                ctx.imageSmoothingEnabled = true
+                ctx.imageSmoothingQuality = 'high'
+                ctx.drawImage(img, x, y, scaledWidth, scaledHeight)
+              } else {
+                // 普通调整模式
+                if (settings.maintainAspectRatio) {
+                  const ratio = Math.min(settings.width / img.width, settings.height / img.height)
+                  targetWidth = img.width * ratio
+                  targetHeight = img.height * ratio
+                } else {
+                  targetWidth = settings.width
+                  targetHeight = settings.height
+                }
+                
+                canvas.width = targetWidth
+                canvas.height = targetHeight
+                
+                // 高质量绘制
+                ctx.imageSmoothingEnabled = true
+                ctx.imageSmoothingQuality = 'high'
+                ctx.drawImage(img, 0, 0, targetWidth, targetHeight)
               }
             } else if (settings.width) {
               targetWidth = settings.width
               targetHeight = settings.maintainAspectRatio ? (img.height * settings.width / img.width) : img.height
+              
+              canvas.width = targetWidth
+              canvas.height = targetHeight
+              
+              ctx.imageSmoothingEnabled = true
+              ctx.imageSmoothingQuality = 'high'
+              ctx.drawImage(img, 0, 0, targetWidth, targetHeight)
             } else if (settings.height) {
               targetHeight = settings.height
               targetWidth = settings.maintainAspectRatio ? (img.width * settings.height / img.height) : img.width
+              
+              canvas.width = targetWidth
+              canvas.height = targetHeight
+              
+              ctx.imageSmoothingEnabled = true
+              ctx.imageSmoothingQuality = 'high'
+              ctx.drawImage(img, 0, 0, targetWidth, targetHeight)
             }
+          } else {
+            // 保持原始尺寸
+            canvas.width = targetWidth
+            canvas.height = targetHeight
+            
+            ctx.imageSmoothingEnabled = true
+            ctx.imageSmoothingQuality = 'high'
+            ctx.drawImage(img, 0, 0, targetWidth, targetHeight)
           }
-
-          canvas.width = targetWidth
-          canvas.height = targetHeight
-
-          // 高质量绘制
-          ctx.imageSmoothingEnabled = true
-          ctx.imageSmoothingQuality = 'high'
-          ctx.drawImage(img, 0, 0, targetWidth, targetHeight)
 
           // 转换为 WebP
           canvas.toBlob(
@@ -394,30 +454,121 @@ export default function AdvancedConverter() {
                 padding: '1rem',
                 marginTop: '0.5rem'
               }}>
-                {/* 保持宽高比选项 - 移到顶部 */}
+                {/* 调整模式选择 */}
                 <div style={{ marginBottom: '1rem' }}>
-                  <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <input
-                      type="checkbox"
-                      checked={settings.maintainAspectRatio}
-                      onChange={(e) => setSettings(prev => ({
-                        ...prev,
-                        maintainAspectRatio: e.target.checked
-                      }))}
-                    />
-                    <span style={{ fontSize: '0.875rem', fontWeight: 500, color: '#374151' }}>保持宽高比</span>
+                  <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 500, color: '#374151' }}>
+                    调整模式
                   </label>
-                  {settings.originalAspectRatio && (
-                    <div style={{ fontSize: '0.75rem', color: '#6b7280', marginTop: '0.25rem', marginLeft: '1.5rem' }}>
-                      当前比例: {settings.originalAspectRatio.toFixed(2)}:1
-                    </div>
-                  )}
+                  <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <input
+                        type="radio"
+                        name="canvasMode"
+                        value="resize"
+                        checked={settings.canvasMode === 'resize'}
+                        onChange={(e) => setSettings(prev => ({
+                          ...prev,
+                          canvasMode: e.target.value as 'resize' | 'canvas'
+                        }))}
+                      />
+                      <span style={{ fontSize: '0.875rem', color: '#374151' }}>直接调整</span>
+                    </label>
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <input
+                        type="radio"
+                        name="canvasMode"
+                        value="canvas"
+                        checked={settings.canvasMode === 'canvas'}
+                        onChange={(e) => setSettings(prev => ({
+                          ...prev,
+                          canvasMode: e.target.value as 'resize' | 'canvas'
+                        }))}
+                      />
+                      <span style={{ fontSize: '0.875rem', color: '#374151' }}>自定义画布大小</span>
+                    </label>
+                  </div>
+                  <div style={{ fontSize: '0.75rem', color: '#6b7280', marginTop: '0.25rem' }}>
+                    {settings.canvasMode === 'resize' 
+                      ? '直接将图片调整到指定尺寸' 
+                      : '将图片等比放大并居中放置在指定尺寸的画布上'
+                    }
+                  </div>
                 </div>
+
+                {/* 画布背景色选择 - 仅在画布模式下显示 */}
+                {settings.canvasMode === 'canvas' && (
+                  <div style={{ marginBottom: '1rem' }}>
+                    <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 500, color: '#374151' }}>
+                      画布背景
+                    </label>
+                    <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
+                      <select
+                        value={settings.canvasColor}
+                        onChange={(e) => setSettings(prev => ({
+                          ...prev,
+                          canvasColor: e.target.value
+                        }))}
+                        style={{
+                          padding: '0.25rem 0.5rem',
+                          border: '1px solid #cbd5e1',
+                          borderRadius: '4px',
+                          fontSize: '0.75rem',
+                          color: '#374151'
+                        }}
+                      >
+                        <option value="transparent">透明</option>
+                        <option value="#ffffff">白色</option>
+                        <option value="#000000">黑色</option>
+                        <option value="#f3f4f6">浅灰</option>
+                        <option value="#e5e7eb">中灰</option>
+                      </select>
+                      {settings.canvasColor !== 'transparent' && (
+                        <input
+                          type="color"
+                          value={settings.canvasColor}
+                          onChange={(e) => setSettings(prev => ({
+                            ...prev,
+                            canvasColor: e.target.value
+                          }))}
+                          style={{
+                            width: '30px',
+                            height: '24px',
+                            border: '1px solid #cbd5e1',
+                            borderRadius: '4px',
+                            cursor: 'pointer'
+                          }}
+                        />
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* 保持宽高比选项 - 仅在直接调整模式下显示 */}
+                {settings.canvasMode === 'resize' && (
+                  <div style={{ marginBottom: '1rem' }}>
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <input
+                        type="checkbox"
+                        checked={settings.maintainAspectRatio}
+                        onChange={(e) => setSettings(prev => ({
+                          ...prev,
+                          maintainAspectRatio: e.target.checked
+                        }))}
+                      />
+                      <span style={{ fontSize: '0.875rem', fontWeight: 500, color: '#374151' }}>保持宽高比</span>
+                    </label>
+                    {settings.originalAspectRatio && (
+                      <div style={{ fontSize: '0.75rem', color: '#6b7280', marginTop: '0.25rem', marginLeft: '1.5rem' }}>
+                        当前比例: {settings.originalAspectRatio.toFixed(2)}:1
+                      </div>
+                    )}
+                  </div>
+                )}
 
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: '1rem', marginBottom: '1rem' }}>
                   <div>
                     <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 500, color: '#374151' }}>
-                      宽度 (px)
+                      {settings.canvasMode === 'canvas' ? '画布宽度 (px)' : '宽度 (px)'}
                     </label>
                     <input
                       type="number"
@@ -437,7 +588,7 @@ export default function AdvancedConverter() {
 
                   <div>
                     <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 500, color: '#374151' }}>
-                      高度 (px)
+                      {settings.canvasMode === 'canvas' ? '画布高度 (px)' : '高度 (px)'}
                     </label>
                     <input
                       type="number"
@@ -505,9 +656,11 @@ export default function AdvancedConverter() {
 
                 <div style={{ marginTop: '0.75rem', padding: '0.5rem', background: '#eff6ff', borderRadius: '4px', fontSize: '0.75rem', color: '#1e40af' }}>
                   💡 提示: 
-                  {settings.maintainAspectRatio 
-                    ? ' 启用保持比例时，修改宽度或高度会自动计算另一个值'
-                    : ' 关闭保持比例时，可以自由设置宽度和高度，图片可能会变形'
+                  {settings.canvasMode === 'canvas'
+                    ? ' 画布模式会将图片等比放大到画布尺寸的90%，然后居中放置，适合制作固定尺寸的图片'
+                    : settings.maintainAspectRatio 
+                      ? ' 启用保持比例时，修改宽度或高度会自动计算另一个值'
+                      : ' 关闭保持比例时，可以自由设置宽度和高度，图片可能会变形'
                   }
                 </div>
               </div>
@@ -529,8 +682,14 @@ export default function AdvancedConverter() {
               {settings.resize ? (
                 <>
                   <div>• 尺寸调整: 启用</div>
+                  <div>• 调整模式: {settings.canvasMode === 'canvas' ? '自定义画布大小' : '直接调整'}</div>
                   <div>• 目标尺寸: {settings.width || '自动'} × {settings.height || '自动'} px</div>
-                  <div>• 保持比例: {settings.maintainAspectRatio ? '是' : '否'}</div>
+                  {settings.canvasMode === 'resize' && (
+                    <div>• 保持比例: {settings.maintainAspectRatio ? '是' : '否'}</div>
+                  )}
+                  {settings.canvasMode === 'canvas' && (
+                    <div>• 画布背景: {settings.canvasColor === 'transparent' ? '透明' : settings.canvasColor}</div>
+                  )}
                   {settings.originalAspectRatio && (
                     <div>• 原始比例: {settings.originalAspectRatio.toFixed(2)}:1</div>
                   )}
