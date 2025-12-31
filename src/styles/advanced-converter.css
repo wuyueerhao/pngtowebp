@@ -282,42 +282,124 @@
   
   .setting-label {
     min-width: auto;
+    font-size: 0.8rem;
+  }
+  
+  .setting-input {
+    width: 100%;
+    max-width: 120px;
   }
   
   .quality-setting {
     flex-direction: column;
     align-items: stretch;
+    gap: 0.5rem;
+  }
+  
+  .quality-label {
+    min-width: auto;
   }
   
   .size-inputs {
     flex-direction: column;
     align-items: stretch;
+    gap: 0.75rem;
+  }
+  
+  .size-input-group {
+    justify-content: space-between;
+  }
+  
+  .size-input {
+    width: 100px;
   }
   
   .canvas-mode-options {
     flex-direction: column;
+    gap: 0.5rem;
   }
   
   .canvas-color-setting {
     flex-direction: column;
     align-items: flex-start;
+    gap: 0.5rem;
   }
   
   .advanced-result-header {
     flex-direction: column;
+    gap: 0.75rem;
   }
   
   .advanced-result-stats {
     grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+  
+  .preset-sizes {
+    justify-content: center;
   }
 }
 
 @media (max-width: 480px) {
   .advanced-upload-area {
-    padding: 2rem 1rem;
+    padding: 1.5rem 0.75rem;
   }
   
-  .preset-sizes {
-    justify-content: center;
+  .advanced-settings {
+    padding: 0.75rem;
+  }
+  
+  .settings-title {
+    font-size: 0.9rem;
+    text-align: center;
+  }
+  
+  .setting-row {
+    gap: 0.4rem;
+  }
+  
+  .setting-label {
+    font-size: 0.75rem;
+  }
+  
+  .setting-input,
+  .setting-select {
+    font-size: 0.8rem;
+    padding: 0.4rem;
+  }
+  
+  .size-input {
+    width: 80px;
+    font-size: 0.8rem;
+  }
+  
+  .preset-btn {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.4rem;
+  }
+  
+  .quality-value {
+    font-size: 0.8rem;
+  }
+  
+  .canvas-mode-option {
+    font-size: 0.8rem;
+  }
+  
+  .color-select {
+    font-size: 0.7rem;
+  }
+  
+  .advanced-result-item {
+    padding: 0.75rem;
+  }
+  
+  .advanced-result-settings {
+    font-size: 0.7rem;
+    line-height: 1.3;
+  }
+  
+  .advanced-result-stats {
+    font-size: 0.8rem;
   }
 }

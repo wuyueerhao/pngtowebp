@@ -10,6 +10,7 @@
 - 🎨 **高级设置** - 自定义转换质量和调整图片尺寸
 - 💰 **完全免费** - 零成本部署和使用
 - 📱 **响应式设计** - 完美适配桌面和移动端
+- 🎯 **标准化样式** - 模块化CSS架构，易于维护
 
 ## 🚀 快速开始
 
@@ -131,13 +132,42 @@ pngtowebp/
 │   │   ├── ImageConverter.tsx    # 基础转换器
 │   │   └── AdvancedConverter.tsx # 高级转换器
 │   └── styles/
-│       └── globals.css           # 全局样式
+│       ├── globals.css           # 全局样式和导入
+│       ├── layout.css            # 布局相关样式
+│       ├── components.css        # 通用组件样式
+│       ├── converter.css         # 基础转换器样式
+│       └── advanced-converter.css # 高级转换器样式
 ├── public/
-│   └── _redirects                # Cloudflare Pages 路由配置
+│   ├── favicon.ico               # 网站图标
+│   └── manifest.webmanifest      # PWA配置
 ├── next.config.js                # Next.js 静态导出配置
 ├── package.json
-└── README.md
+├── README.md
+└── PROGRESS.md                   # 项目进度文档
 ```
+
+## 🎨 样式架构
+
+### CSS 模块化设计
+项目采用模块化CSS架构，将样式按功能分离：
+
+- **globals.css** - 全局样式、基础组件、工具类
+- **layout.css** - 页面布局、导航、页脚样式
+- **components.css** - 通用组件、设置面板、信息框
+- **converter.css** - 基础转换器专用样式
+- **advanced-converter.css** - 高级转换器专用样式
+
+### 响应式设计
+完整的移动端优化：
+- **桌面端** (>768px) - 完整功能布局
+- **平板端** (768px-480px) - 适配中等屏幕
+- **手机端** (<480px) - 优化触摸操作
+
+### 性能优化
+- ✅ CSS缓存和压缩
+- ✅ 减少内联样式的运行时计算
+- ✅ 模块化加载，按需引入
+- ✅ 标准化的类名，便于维护
 
 ## 🎯 功能说明
 

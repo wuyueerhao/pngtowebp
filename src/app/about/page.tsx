@@ -59,8 +59,8 @@ export default function About() {
         <section className="about-section">
           <h2 className="section-title">📞 联系我</h2>
           <p className="section-content">
-            如果您在使用过程中遇到问题或有改进建议，欢迎通过 
-            <a href="https://recordmind.com" target="_blank" rel="noopener noreferrer" className="contact-link"> RecordMind.com </a>
+            如果在使用过程中遇到问题或有改进建议，欢迎通过 
+            <a href="mailto:world@recordmind.com" className="contact-link">world@recordmind.com</a>
             联系我。我会持续优化产品，为用户提供更好的体验。
           </p>
           <p className="section-content">
