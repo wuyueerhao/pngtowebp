@@ -61,7 +61,7 @@ export default function About() {
           <p className="section-content">
             如果在使用过程中遇到问题或有改进建议，欢迎通过 
             <a href="mailto:world@recordmind.com" className="contact-link">world@recordmind.com</a>
-            联系我。我会持续优化产品，为用户提供更好的体验。
+            联系我。
           </p>
           <p className="section-content">
             仓库地址：

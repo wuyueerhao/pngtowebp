@@ -37,11 +37,13 @@
   font-size: 1.25rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
+  color: #1e293b;
 }
 
 .upload-description {
-  color: #64748b;
+  color: #475569;
   font-size: 0.9rem;
+  font-weight: 500;
 }
 
 .file-input {

@@ -237,6 +237,24 @@
   transform: scale(1.02);
 }
 
+.advanced-upload-area .upload-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.advanced-upload-area .upload-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #1e293b;
+}
+
+.advanced-upload-area .upload-description {
+  color: #475569;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
 /* 高级结果项 */
 .advanced-result-item {
   border: 1px solid #e2e8f0;
