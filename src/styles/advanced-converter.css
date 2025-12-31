@@ -1,0 +1,323 @@
+/* 高级转换器组件样式 */
+
+.advanced-converter {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* 设置面板样式 */
+.advanced-settings {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.settings-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.75rem;
+}
+
+.settings-grid {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.setting-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.setting-row:last-child {
+  margin-bottom: 0;
+}
+
+.setting-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  min-width: 80px;
+}
+
+.setting-input {
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  width: 80px;
+}
+
+.setting-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.setting-slider {
+  flex: 1;
+  margin: 0 0.5rem;
+}
+
+.setting-checkbox {
+  margin-right: 0.5rem;
+}
+
+.setting-select {
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  background: white;
+}
+
+.setting-select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* 质量设置 */
+.quality-setting {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.quality-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  min-width: 60px;
+}
+
+.quality-slider {
+  flex: 1;
+}
+
+.quality-value {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #1e293b;
+  min-width: 40px;
+  text-align: right;
+}
+
+/* 尺寸设置 */
+.size-settings {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.aspect-ratio-setting {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.size-inputs {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.size-input-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.size-input {
+  width: 80px;
+  padding: 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+
+.size-input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* 预设尺寸 */
+.preset-sizes {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-top: 0.5rem;
+}
+
+.preset-btn {
+  padding: 0.25rem 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  background: white;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.preset-btn:hover {
+  background: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+.preset-btn:active {
+  background: #e5e7eb;
+}
+
+/* 画布模式设置 */
+.canvas-mode-setting {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.canvas-mode-options {
+  display: flex;
+  gap: 1rem;
+}
+
+.canvas-mode-option {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.canvas-color-setting {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.color-input {
+  width: 40px;
+  height: 32px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.color-select {
+  padding: 0.25rem 0.5rem;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  background: white;
+}
+
+/* 高级上传区域 */
+.advanced-upload-area {
+  border: 2px dashed #cbd5e1;
+  border-radius: 12px;
+  padding: 3rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.advanced-upload-area:hover {
+  border-color: #3b82f6;
+  background: rgba(59, 130, 246, 0.05);
+}
+
+.advanced-upload-area.dragging {
+  border-color: #2563eb;
+  background: rgba(37, 99, 235, 0.1);
+  transform: scale(1.02);
+}
+
+/* 高级结果项 */
+.advanced-result-item {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 1rem;
+  background: #f8fafc;
+}
+
+.advanced-result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+  gap: 1rem;
+}
+
+.advanced-result-info {
+  flex: 1;
+}
+
+.advanced-result-settings {
+  font-size: 0.75rem;
+  color: #64748b;
+  margin-top: 0.25rem;
+  line-height: 1.4;
+}
+
+.advanced-result-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  margin-top: 0.75rem;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .setting-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .setting-label {
+    min-width: auto;
+  }
+  
+  .quality-setting {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .size-inputs {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .canvas-mode-options {
+    flex-direction: column;
+  }
+  
+  .canvas-color-setting {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .advanced-result-header {
+    flex-direction: column;
+  }
+  
+  .advanced-result-stats {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .advanced-upload-area {
+    padding: 2rem 1rem;
+  }
+  
+  .preset-sizes {
+    justify-content: center;
+  }
+}

@@ -237,30 +237,20 @@ export default function ImageConverter() {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+    <div className="converter-container">
       {/* 上传区域 */}
       <div
         onDrop={onDrop}
         onDragOver={onDragOver}
         onDragLeave={onDragLeave}
         onClick={triggerFileInput}
-        style={{
-          border: `2px dashed ${isDragging ? '#2563eb' : '#cbd5e1'}`,
-          borderRadius: '12px',
-          padding: '3rem',
-          textAlign: 'center' as const,
-          transition: 'all 0.3s ease',
-          cursor: 'pointer',
-          background: isDragging ? 'rgba(37, 99, 235, 0.1)' : 'rgba(255, 255, 255, 0.5)',
-          transform: isDragging ? 'scale(1.02)' : 'scale(1)',
-          borderColor: isDragging ? '#2563eb' : '#cbd5e1'
-        }}
+        className={`upload-area ${isDragging ? 'dragging' : ''}`}
       >
-        <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>📸</div>
-        <h3 style={{ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.5rem' }}>
+        <div className="upload-icon">📸</div>
+        <h3 className="upload-title">
           拖拽图片到此处或点击上传
         </h3>
-        <p style={{ color: '#64748b', fontSize: '0.9rem' }}>
+        <p className="upload-description">
           支持 PNG, JPG, JPEG 格式
         </p>
         <input
@@ -269,16 +259,16 @@ export default function ImageConverter() {
           multiple
           accept="image/png,image/jpeg,image/jpg,image/webp"
           onChange={onFileInputChange}
-          style={{ display: 'none' }}
+          className="file-input"
         />
       </div>
 
       {/* 进度条 */}
       {isConverting && (
-        <div style={{ background: 'white', padding: '1rem', borderRadius: '8px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-            <span style={{ fontWeight: 500 }}>转换中...</span>
-            <span style={{ fontWeight: 600 }}>{Math.round(progress)}%</span>
+        <div className="progress-container">
+          <div className="progress-header">
+            <span className="progress-label">转换中...</span>
+            <span className="progress-percentage">{Math.round(progress)}%</span>
           </div>
           <div className="progress-bar">
             <div className="progress-fill" style={{ width: `${progress}%` }}></div>
@@ -300,95 +290,58 @@ export default function ImageConverter() {
 
       {/* 结果区域 */}
       {results.length > 0 && (
-        <div style={{ background: 'white', borderRadius: '12px', padding: '1.5rem' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.5rem' }}>
-            <h3 style={{ fontSize: '1.25rem', fontWeight: '600' }}>转换结果 ({results.length})</h3>
-            <div style={{ display: 'flex', gap: '0.5rem' }}>
+        <div className="results-container">
+          <div className="results-header">
+            <h3 className="results-title">转换结果 ({results.length})</h3>
+            <div className="results-actions">
               <button
                 onClick={downloadAllAsZip}
                 disabled={isDownloading}
-                style={{
-                  background: isDownloading ? '#9ca3af' : '#3b82f6',
-                  color: 'white',
-                  border: 'none',
-                  padding: '0.5rem 1rem',
-                  borderRadius: '6px',
-                  cursor: isDownloading ? 'not-allowed' : 'pointer',
-                  fontSize: '0.875rem',
-                  fontWeight: 600,
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.5rem'
-                }}
+                className="batch-download-btn"
               >
                 {isDownloading ? '📦 打包中...' : '📦 批量下载 ZIP'}
               </button>
               <button
                 onClick={clearResults}
-                style={{
-                  background: '#ef4444',
-                  color: 'white',
-                  border: 'none',
-                  padding: '0.5rem 1rem',
-                  borderRadius: '6px',
-                  cursor: 'pointer',
-                  fontSize: '0.875rem'
-                }}
+                className="clear-btn"
               >
                 清空
               </button>
             </div>
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <div className="results-list">
             {results.map((result, index) => (
-              <div key={index} style={{
-                border: '1px solid #e2e8f0',
-                borderRadius: '8px',
-                padding: '1rem',
-                background: '#f8fafc'
-              }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ fontWeight: 600, marginBottom: '0.25rem' }}>
+              <div key={index} className="result-item">
+                <div className="result-header">
+                  <div className="result-info">
+                    <div className="result-filename">
                       {result.originalFile.name}
                     </div>
-                    <div style={{ fontSize: '0.875rem', color: '#64748b' }}>
+                    <div className="result-type">
                       {result.originalFile.type} → image/webp
                     </div>
                   </div>
                   <button
                     onClick={() => downloadFile(result)}
-                    style={{
-                      background: '#10b981',
-                      color: 'white',
-                      border: 'none',
-                      padding: '0.5rem 1rem',
-                      borderRadius: '6px',
-                      cursor: 'pointer',
-                      fontWeight: 600,
-                      fontSize: '0.875rem'
-                    }}
+                    className="download-btn"
                   >
                     下载
                   </button>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '0.5rem', fontSize: '0.875rem' }}>
-                  <div>
-                    <span style={{ color: '#64748b' }}>原始:</span>{' '}
-                    <span style={{ fontWeight: 600 }}>{formatSize(result.originalSize)}</span>
+                <div className="result-stats">
+                  <div className="stat-item">
+                    <span className="stat-label">原始:</span>
+                    <span className="stat-value">{formatSize(result.originalSize)}</span>
                   </div>
-                  <div>
-                    <span style={{ color: '#64748b' }}>转换后:</span>{' '}
-                    <span style={{ fontWeight: 600 }}>{formatSize(result.convertedSize)}</span>
+                  <div className="stat-item">
+                    <span className="stat-label">转换后:</span>
+                    <span className="stat-value">{formatSize(result.convertedSize)}</span>
                   </div>
-                  <div>
-                    <span style={{ color: '#64748b' }}>减少:</span>{' '}
-                    <span style={{
-                      fontWeight: 600,
-                      color: result.reduction > 0 ? '#10b981' : '#ef4444'
-                    }}>
+                  <div className="stat-item">
+                    <span className="stat-label">减少:</span>
+                    <span className={`stat-value ${result.reduction > 0 ? 'positive' : 'negative'}`}>
                       {result.reduction > 0 ? `-${result.reduction}%` : `+${Math.abs(result.reduction)}%`}
                     </span>
                   </div>
@@ -397,7 +350,7 @@ export default function ImageConverter() {
             ))}
           </div>
 
-          <div style={{ marginTop: '1rem', padding: '0.75rem', background: '#dbeafe', borderRadius: '6px', fontSize: '0.875rem', color: '#1e40af' }}>
+          <div className="converter-tip">
             💡 提示: 点击单个下载按钮保存图片，或使用&ldquo;批量下载 ZIP&rdquo;一次性下载所有转换后的 WebP 图片
           </div>
         </div>
