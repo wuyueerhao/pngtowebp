@@ -3,7 +3,7 @@ export default function About() {
     <main style={{ minHeight: '100vh', padding: '2rem 1rem', background: '#f8fafc' }}>
       <div style={{ maxWidth: '800px', margin: '0 auto', background: 'white', borderRadius: '12px', padding: '2rem', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
         <header style={{ textAlign: 'center', marginBottom: '2rem' }}>
-          <h1 style={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '0.5rem', color: '#1e293b' }}>关于我们</h1>
+          <h1 style={{ fontSize: '2rem', fontWeight: 'bold', marginBottom: '0.5rem', color: '#1e293b' }}>关于我</h1>
           <p style={{ color: '#64748b', fontSize: '1.1rem' }}>PNG 转 WebP 转换器</p>
         </header>
 
@@ -40,9 +40,9 @@ export default function About() {
         </section>
 
         <section style={{ marginBottom: '2rem' }}>
-          <h2 style={{ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.75rem', color: '#374151' }}>🌐 更多产品</h2>
+          <h2 style={{ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.75rem', color: '#374151' }}>🌐 更多有趣好玩的项目</h2>
           <p style={{ lineHeight: '1.6', color: '#475569', marginBottom: '1rem' }}>
-            我们致力于开发更多实用的在线工具，提升用户的工作效率。访问我们的主站了解更多产品：
+            分享和开发实用的在线工具，提升用户的工作效率。访问我的个人网站了解更多产品：
           </p>
           <div style={{ textAlign: 'center', padding: '1rem', background: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
             <a 
@@ -65,11 +65,17 @@ export default function About() {
         </section>
 
         <section style={{ marginBottom: '2rem' }}>
-          <h2 style={{ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.75rem', color: '#374151' }}>📞 联系我们</h2>
-          <p style={{ lineHeight: '1.6', color: '#475569' }}>
+          <h2 style={{ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.75rem', color: '#374151' }}>📞 联系我</h2>
+          <p style={{ lineHeight: '1.6', color: '#475569', marginBottom: '1rem' }}>
             如果您在使用过程中遇到问题或有改进建议，欢迎通过 
             <a href="https://recordmind.com" target="_blank" rel="noopener noreferrer" style={{ color: '#3b82f6', textDecoration: 'none' }}> RecordMind.com </a>
-            联系我们。我们会持续优化产品，为用户提供更好的体验。
+            联系我。我会持续优化产品，为用户提供更好的体验。
+          </p>
+          <p style={{ lineHeight: '1.6', color: '#475569' }}>
+            仓库地址：
+            <a href="https://github.com/wuyueerhao/pngtowebp" target="_blank" rel="noopener noreferrer" style={{ color: '#3b82f6', textDecoration: 'none' }}>
+              https://github.com/wuyueerhao/pngtowebp
+            </a>
           </p>
         </section>
 
