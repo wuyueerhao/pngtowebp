@@ -41,6 +41,7 @@ npm start
 
 **当前配置**: Next.js 14 + App Router
 **部署方式**: 标准构建（支持 API 路由和中间件）
+**构建输出**: `.next` 目录
 
 ### 方法 1: GitHub 连接（最推荐）
 
@@ -80,6 +81,8 @@ npm run build
 
 # 部署
 wrangler pages deploy .next --project-name=pngtowebp
+
+# 访问: https://pngtowebp.pages.dev
 ```
 
 ### 方法 3: 直接上传
@@ -89,9 +92,23 @@ wrangler pages deploy .next --project-name=pngtowebp
 3. 上传 `.next` 文件夹的**所有内容**
 4. 设置构建命令: `npm run build`
 
-### 🐛 部署后有问题？
+### 🐛 部署后页面空白？
 
-查看详细指南: [CLOUDFLARE_DEPLOY.md](./CLOUDFLARE_DEPLOY.md)
+**快速解决**:
+```bash
+# 重新构建
+rm -rf .next
+npm run build
+
+# 检查构建输出
+ls .next/server/app/
+# 应该看到: index.html, advanced.html, about.html
+```
+
+**常见问题**:
+- **wrangler 警告**: 可忽略，不影响部署
+- **页面空白**: 重新构建并确保上传 `.next` 内容
+- **404 错误**: 检查是否上传了正确的文件
 
 ## 📁 项目结构
 
@@ -102,9 +119,10 @@ pngtowebp/
 │   │   ├── page.tsx              # 主页
 │   │   ├── advanced/page.tsx     # 高级转换器
 │   │   ├── about/page.tsx        # 关于页面
-│   │   ├── api/                  # API 路由
-│   │   ├── layout.tsx            # 根布局
-│   │   └── not-found.tsx         # 404 页面
+│   │   ├── not-found.tsx         # 404 页面
+│   │   ├── layout.tsx            # 布局
+│   │   ├── manifest.ts           # PWA 配置
+│   │   └── icon.tsx              # App Icon
 │   ├── components/
 │   │   ├── ImageConverter.tsx    # 基础转换器
 │   │   └── AdvancedConverter.tsx # 高级转换器
@@ -114,8 +132,10 @@ pngtowebp/
 ├── package.json
 ├── next.config.js                # Next.js 配置
 ├── tsconfig.json
+├── wrangler.toml                 # Cloudflare 配置
 ├── deploy.sh                     # 部署脚本
-└── test-setup.sh                 # 环境测试
+├── test-setup.sh                 # 环境测试
+└── README.md                     # 本文件
 ```
 
 ## 🎯 功能说明
@@ -190,6 +210,12 @@ A: 输入: PNG, JPG, JPEG, WebP, GIF → 输出: WebP
 
 **Q: 为什么选择 Cloudflare Pages？**
 A: 免费、快速、全球 CDN、自动 HTTPS、易于部署。
+
+**Q: wrangler.toml 警告怎么办？**
+A: 这个警告不影响部署，可以忽略或删除该文件。
+
+**Q: 部署后页面空白？**
+A: 重新构建 (`rm -rf .next && npm run build`) 并重新部署。
 
 ## 📞 需要帮助？
 
