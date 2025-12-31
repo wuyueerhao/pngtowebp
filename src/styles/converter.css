@@ -130,9 +130,13 @@
   border-radius: 6px;
   cursor: pointer;
   font-size: 0.875rem;
+  font-weight: 600;
   transition: background-color 0.2s;
   white-space: nowrap;
   min-width: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .clear-btn:hover {
