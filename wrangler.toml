@@ -1,6 +1,9 @@
 # Cloudflare Pages 配置
 # 用于 wrangler pages deploy 命令
 
+# 项目名称（Cloudflare Pages 要求）
+name = "pngtowebp"
+
 # Pages 构建输出目录（必需）
 pages_build_output_dir = ".next"
 
