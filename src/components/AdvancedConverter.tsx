@@ -9,6 +9,7 @@ interface ConversionSettings {
   width?: number
   height?: number
   maintainAspectRatio: boolean
+  originalAspectRatio?: number
 }
 
 interface AdvancedResult {
@@ -33,8 +34,43 @@ export default function AdvancedConverter() {
   const [settings, setSettings] = useState<ConversionSettings>({
     quality: 0.9,
     resize: false,
-    maintainAspectRatio: true
+    maintainAspectRatio: true,
+    originalAspectRatio: 1
   })
+
+  // 处理宽度变化，自动计算高度
+  const handleWidthChange = (width: number | undefined) => {
+    if (settings.maintainAspectRatio && width && settings.originalAspectRatio) {
+      const calculatedHeight = Math.round(width / settings.originalAspectRatio)
+      setSettings(prev => ({
+        ...prev,
+        width,
+        height: calculatedHeight
+      }))
+    } else {
+      setSettings(prev => ({
+        ...prev,
+        width
+      }))
+    }
+  }
+
+  // 处理高度变化，自动计算宽度
+  const handleHeightChange = (height: number | undefined) => {
+    if (settings.maintainAspectRatio && height && settings.originalAspectRatio) {
+      const calculatedWidth = Math.round(height * settings.originalAspectRatio)
+      setSettings(prev => ({
+        ...prev,
+        height,
+        width: calculatedWidth
+      }))
+    } else {
+      setSettings(prev => ({
+        ...prev,
+        height
+      }))
+    }
+  }
 
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -136,6 +172,25 @@ export default function AdvancedConverter() {
     if (validFiles.length === 0) {
       setError('请选择有效的图片文件 (PNG, JPG, JPEG, GIF, WebP)')
       return
+    }
+
+    // 获取第一张图片的宽高比作为参考
+    if (validFiles.length > 0 && !settings.originalAspectRatio) {
+      const firstFile = validFiles[0]
+      const img = new Image()
+      const reader = new FileReader()
+      
+      reader.onload = (e) => {
+        img.onload = () => {
+          const aspectRatio = img.width / img.height
+          setSettings(prev => ({
+            ...prev,
+            originalAspectRatio: aspectRatio
+          }))
+        }
+        img.src = e.target?.result as string
+      }
+      reader.readAsDataURL(firstFile)
     }
 
     setIsConverting(true)
@@ -328,7 +383,7 @@ export default function AdvancedConverter() {
                   resize: e.target.checked
                 }))}
               />
-              <span style={{ fontWeight: 500 }}>调整尺寸</span>
+              <span style={{ fontWeight: 500, color: '#374151' }}>调整尺寸</span>
             </label>
 
             {settings.resize && (
@@ -339,47 +394,63 @@ export default function AdvancedConverter() {
                 padding: '1rem',
                 marginTop: '0.5rem'
               }}>
+                {/* 保持宽高比选项 - 移到顶部 */}
+                <div style={{ marginBottom: '1rem' }}>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <input
+                      type="checkbox"
+                      checked={settings.maintainAspectRatio}
+                      onChange={(e) => setSettings(prev => ({
+                        ...prev,
+                        maintainAspectRatio: e.target.checked
+                      }))}
+                    />
+                    <span style={{ fontSize: '0.875rem', fontWeight: 500, color: '#374151' }}>保持宽高比</span>
+                  </label>
+                  {settings.originalAspectRatio && (
+                    <div style={{ fontSize: '0.75rem', color: '#6b7280', marginTop: '0.25rem', marginLeft: '1.5rem' }}>
+                      当前比例: {settings.originalAspectRatio.toFixed(2)}:1
+                    </div>
+                  )}
+                </div>
+
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: '1rem', marginBottom: '1rem' }}>
                   <div>
-                    <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 500 }}>
+                    <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 500, color: '#374151' }}>
                       宽度 (px)
                     </label>
                     <input
                       type="number"
                       placeholder="自动"
                       value={settings.width || ''}
-                      onChange={(e) => setSettings(prev => ({
-                        ...prev,
-                        width: e.target.value ? parseInt(e.target.value) : undefined
-                      }))}
+                      onChange={(e) => handleWidthChange(e.target.value ? parseInt(e.target.value) : undefined)}
                       style={{
                         width: '100%',
                         padding: '0.5rem',
                         border: '1px solid #cbd5e1',
                         borderRadius: '6px',
-                        fontSize: '0.875rem'
+                        fontSize: '0.875rem',
+                        color: '#374151'
                       }}
                     />
                   </div>
 
                   <div>
-                    <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 500 }}>
+                    <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 500, color: '#374151' }}>
                       高度 (px)
                     </label>
                     <input
                       type="number"
                       placeholder="自动"
                       value={settings.height || ''}
-                      onChange={(e) => setSettings(prev => ({
-                        ...prev,
-                        height: e.target.value ? parseInt(e.target.value) : undefined
-                      }))}
+                      onChange={(e) => handleHeightChange(e.target.value ? parseInt(e.target.value) : undefined)}
                       style={{
                         width: '100%',
                         padding: '0.5rem',
                         border: '1px solid #cbd5e1',
                         borderRadius: '6px',
-                        fontSize: '0.875rem'
+                        fontSize: '0.875rem',
+                        color: '#374151'
                       }}
                     />
                   </div>
@@ -387,7 +458,7 @@ export default function AdvancedConverter() {
 
                 {/* 预设尺寸 */}
                 <div style={{ marginBottom: '1rem' }}>
-                  <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 500 }}>
+                  <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 500, color: '#374151' }}>
                     常用尺寸预设
                   </label>
                   <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
@@ -400,11 +471,22 @@ export default function AdvancedConverter() {
                     ].map((preset) => (
                       <button
                         key={preset.name}
-                        onClick={() => setSettings(prev => ({
-                          ...prev,
-                          width: preset.width,
-                          height: preset.height
-                        }))}
+                        onClick={() => {
+                          if (preset.width && preset.height) {
+                            setSettings(prev => ({
+                              ...prev,
+                              width: preset.width,
+                              height: preset.height,
+                              originalAspectRatio: preset.width / preset.height
+                            }))
+                          } else {
+                            setSettings(prev => ({
+                              ...prev,
+                              width: preset.width,
+                              height: preset.height
+                            }))
+                          }
+                        }}
                         style={{
                           padding: '0.25rem 0.5rem',
                           border: '1px solid #cbd5e1',
@@ -421,22 +503,10 @@ export default function AdvancedConverter() {
                   </div>
                 </div>
 
-                <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <input
-                    type="checkbox"
-                    checked={settings.maintainAspectRatio}
-                    onChange={(e) => setSettings(prev => ({
-                      ...prev,
-                      maintainAspectRatio: e.target.checked
-                    }))}
-                  />
-                  <span style={{ fontSize: '0.875rem', fontWeight: 500 }}>保持宽高比</span>
-                </label>
-
                 <div style={{ marginTop: '0.75rem', padding: '0.5rem', background: '#eff6ff', borderRadius: '4px', fontSize: '0.75rem', color: '#1e40af' }}>
                   💡 提示: 
                   {settings.maintainAspectRatio 
-                    ? ' 启用保持比例时，只需设置宽度或高度，另一个值会自动计算'
+                    ? ' 启用保持比例时，修改宽度或高度会自动计算另一个值'
                     : ' 关闭保持比例时，可以自由设置宽度和高度，图片可能会变形'
                   }
                 </div>
@@ -454,13 +524,16 @@ export default function AdvancedConverter() {
             <h4 style={{ fontSize: '0.875rem', fontWeight: 600, marginBottom: '0.5rem', color: '#0369a1' }}>
               📋 当前设置
             </h4>
-            <div style={{ fontSize: '0.75rem', color: '#0c4a6e', lineHeight: '1.4' }}>
+            <div style={{ fontSize: '0.75rem', color: '#374151', lineHeight: '1.4' }}>
               <div>• 质量: {Math.round(settings.quality * 100)}%</div>
               {settings.resize ? (
                 <>
                   <div>• 尺寸调整: 启用</div>
                   <div>• 目标尺寸: {settings.width || '自动'} × {settings.height || '自动'} px</div>
                   <div>• 保持比例: {settings.maintainAspectRatio ? '是' : '否'}</div>
+                  {settings.originalAspectRatio && (
+                    <div>• 原始比例: {settings.originalAspectRatio.toFixed(2)}:1</div>
+                  )}
                 </>
               ) : (
                 <div>• 尺寸调整: 保持原始尺寸</div>
