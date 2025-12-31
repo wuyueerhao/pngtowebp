@@ -24,7 +24,7 @@ export default function Home() {
             🚀 PNG 转 WebP
           </div>
           <div style={{ display: 'flex', gap: '1rem' }}>
-            <a href="/advanced" style={{
+            <a href="/advanced.html" style={{
               color: '#8b5cf6',
               textDecoration: 'none',
               fontWeight: 600,
@@ -34,7 +34,7 @@ export default function Home() {
             }}>
               高级版
             </a>
-            <a href="/about" style={{
+            <a href="/about.html" style={{
               color: '#64748b',
               textDecoration: 'none',
               fontWeight: 600,
@@ -104,7 +104,7 @@ export default function Home() {
             💡 需要更多功能？
           </div>
           <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-            <a href="/advanced" style={{
+            <a href="/advanced.html" style={{
               background: '#8b5cf6',
               color: 'white',
               padding: '0.5rem 1rem',
@@ -134,7 +134,7 @@ export default function Home() {
             基于 Next.js + Cloudflare Pages 部署
           </p>
           <p style={{ marginTop: '0.5rem', fontSize: '0.75rem' }}>
-            © 2024 PNG to WebP Converter | <a href="/about" style={{ color: '#64748b' }}>关于我们</a>
+            © 2024 PNG to WebP Converter | <a href="/about.html" style={{ color: '#64748b' }}>关于我们</a>
           </p>
         </footer>
       </div>

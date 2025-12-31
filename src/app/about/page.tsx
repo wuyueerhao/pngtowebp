@@ -14,7 +14,7 @@ export default function About() {
         </section>
         <div style={{ textAlign: 'center', marginTop: '2rem' }}>
           <a href="/" style={{ background: '#3b82f6', color: 'white', padding: '0.75rem 1.5rem', borderRadius: '8px', textDecoration: 'none', marginRight: '0.5rem' }}>返回首页</a>
-          <a href="/advanced" style={{ background: '#8b5cf6', color: 'white', padding: '0.75rem 1.5rem', borderRadius: '8px', textDecoration: 'none' }}>高级转换</a>
+          <a href="/advanced.html" style={{ background: '#8b5cf6', color: 'white', padding: '0.75rem 1.5rem', borderRadius: '8px', textDecoration: 'none' }}>高级转换</a>
         </div>
       </div>
     </main>

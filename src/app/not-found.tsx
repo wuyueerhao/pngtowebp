@@ -35,7 +35,7 @@ export default function NotFound() {
           }}>
             返回首页
           </Link>
-          <Link href="/about" style={{
+          <Link href="/about.html" style={{
             background: '#64748b',
             color: 'white',
             padding: '0.75rem 1.5rem',
