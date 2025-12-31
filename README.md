@@ -37,15 +37,34 @@ npm start
 
 ## 🌐 Cloudflare Pages 部署
 
-### 方法 1: Dashboard (最简单)
+### ⚠️ 重要提示
 
-1. 访问 [Cloudflare Dashboard](https://dash.cloudflare.com)
-2. 进入 **Workers & Pages** → **Create** → **Pages**
-3. 选择 **Upload assets** 或 **Connect to Git**
-4. 配置构建:
-   - 构建命令: `npm run build`
-   - 构建输出: `.next`
-5. 点击 **Save and Deploy**
+**当前配置**: Next.js 14 + App Router
+**部署方式**: 标准构建（支持 API 路由和中间件）
+
+### 方法 1: GitHub 连接（最推荐）
+
+1. **推送代码到 GitHub**
+   ```bash
+   git add .
+   git commit -m "部署到 Cloudflare Pages"
+   git push origin main
+   ```
+
+2. **Cloudflare Dashboard 设置**
+   - 访问 https://dash.cloudflare.com
+   - Workers & Pages → Create → Pages
+   - 选择 **Connect to Git**
+   - 选择你的仓库 `wuyueerhao/pngtowebp`
+
+3. **构建配置**
+   ```
+   构建命令: npm run build
+   构建输出目录: .next
+   根目录: /
+   ```
+
+4. **保存并部署**
 
 ### 方法 2: Wrangler CLI
 
@@ -60,14 +79,19 @@ wrangler login
 npm run build
 
 # 部署
-wrangler pages deploy .next --project-name=your-project-name
+wrangler pages deploy .next --project-name=pngtowebp
 ```
 
-### 方法 3: GitHub Actions
+### 方法 3: 直接上传
 
-1. 推送代码到 GitHub
-2. 添加 Secrets: `CLOUDFLARE_API_TOKEN`, `CLOUDFLARE_ACCOUNT_ID`
-3. 使用提供的 `.github/workflows/deploy.yml` (需创建)
+1. 运行 `npm run build`
+2. 在 Cloudflare Pages 创建项目
+3. 上传 `.next` 文件夹的**所有内容**
+4. 设置构建命令: `npm run build`
+
+### 🐛 部署后有问题？
+
+查看详细指南: [CLOUDFLARE_DEPLOY.md](./CLOUDFLARE_DEPLOY.md)
 
 ## 📁 项目结构
 
