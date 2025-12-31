@@ -110,6 +110,7 @@
   align-items: center;
   gap: 0.5rem;
   transition: background-color 0.2s;
+  white-space: nowrap;
 }
 
 .batch-download-btn:hover {
@@ -130,6 +131,8 @@
   cursor: pointer;
   font-size: 0.875rem;
   transition: background-color 0.2s;
+  white-space: nowrap;
+  min-width: 60px;
 }
 
 .clear-btn:hover {
@@ -164,11 +167,12 @@
 .result-filename {
   font-weight: 600;
   margin-bottom: 0.25rem;
+  color: #1e293b;
 }
 
 .result-type {
   font-size: 0.875rem;
-  color: #64748b;
+  color: #475569;
 }
 
 .download-btn {
@@ -201,11 +205,13 @@
 }
 
 .stat-label {
-  color: #64748b;
+  color: #374151;
+  font-weight: 500;
 }
 
 .stat-value {
   font-weight: 600;
+  color: #1e293b;
 }
 
 .stat-value.positive {
@@ -313,6 +319,7 @@
     justify-content: center;
     font-size: 0.8rem;
     padding: 0.6rem 1rem;
+    white-space: nowrap;
   }
   
   .result-item {

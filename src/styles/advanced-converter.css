@@ -362,6 +362,17 @@
   flex: 1;
 }
 
+.result-filename {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+  color: #1e293b;
+}
+
+.result-type {
+  font-size: 0.875rem;
+  color: #475569;
+}
+
 .advanced-result-settings {
   font-size: 0.75rem;
   color: #64748b;
@@ -375,6 +386,29 @@
   gap: 0.5rem;
   font-size: 0.875rem;
   margin-top: 0.75rem;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-label {
+  color: #374151;
+  font-weight: 500;
+}
+
+.stat-value {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.stat-value.positive {
+  color: #10b981;
+}
+
+.stat-value.negative {
+  color: #ef4444;
 }
 
 /* 响应式设计 */
