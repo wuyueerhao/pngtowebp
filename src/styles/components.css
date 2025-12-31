@@ -287,10 +287,6 @@
     min-width: auto;
   }
   
-  .quick-actions-content {
-    flex-direction: column;
-    gap: 0.75rem;
-  }
   
   .quick-action-btn {
     width: 100%;
