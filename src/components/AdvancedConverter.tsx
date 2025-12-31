@@ -239,11 +239,11 @@ export default function AdvancedConverter() {
           转换设置
         </h3>
 
-        <div style={{ display: 'grid', gap: '1rem' }}>
+        <div style={{ display: 'grid', gap: '1.5rem' }}>
           {/* 质量设置 */}
           <div>
-            <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500 }}>
-              质量: {Math.round(settings.quality * 100)}%
+            <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 500 }}>
+              图片质量: <span style={{ color: '#3b82f6', fontWeight: 600 }}>{Math.round(settings.quality * 100)}%</span>
             </label>
             <input
               type="range"
@@ -254,13 +254,24 @@ export default function AdvancedConverter() {
                 ...prev,
                 quality: parseInt(e.target.value) / 100
               }))}
-              style={{ width: '100%' }}
+              style={{ 
+                width: '100%',
+                height: '6px',
+                borderRadius: '3px',
+                background: '#e2e8f0',
+                outline: 'none',
+                cursor: 'pointer'
+              }}
             />
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: '#64748b', marginTop: '0.25rem' }}>
+              <span>低质量 (小文件)</span>
+              <span>高质量 (大文件)</span>
+            </div>
           </div>
 
           {/* 尺寸调整 */}
-          <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <div>
+            <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
               <input
                 type="checkbox"
                 checked={settings.resize}
@@ -269,48 +280,98 @@ export default function AdvancedConverter() {
                   resize: e.target.checked
                 }))}
               />
-              <span>调整尺寸</span>
+              <span style={{ fontWeight: 500 }}>调整尺寸</span>
             </label>
 
             {settings.resize && (
-              <>
-                <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <span>宽度:</span>
-                  <input
-                    type="number"
-                    placeholder="自动"
-                    value={settings.width || ''}
-                    onChange={(e) => setSettings(prev => ({
-                      ...prev,
-                      width: e.target.value ? parseInt(e.target.value) : undefined
-                    }))}
-                    style={{
-                      width: '80px',
-                      padding: '0.25rem 0.5rem',
-                      border: '1px solid #cbd5e1',
-                      borderRadius: '4px'
-                    }}
-                  />
-                </label>
+              <div style={{
+                background: '#f8fafc',
+                border: '1px solid #e2e8f0',
+                borderRadius: '8px',
+                padding: '1rem',
+                marginTop: '0.5rem'
+              }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(120px, 1fr))', gap: '1rem', marginBottom: '1rem' }}>
+                  <div>
+                    <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 500 }}>
+                      宽度 (px)
+                    </label>
+                    <input
+                      type="number"
+                      placeholder="自动"
+                      value={settings.width || ''}
+                      onChange={(e) => setSettings(prev => ({
+                        ...prev,
+                        width: e.target.value ? parseInt(e.target.value) : undefined
+                      }))}
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
 
-                <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <span>高度:</span>
-                  <input
-                    type="number"
-                    placeholder="自动"
-                    value={settings.height || ''}
-                    onChange={(e) => setSettings(prev => ({
-                      ...prev,
-                      height: e.target.value ? parseInt(e.target.value) : undefined
-                    }))}
-                    style={{
-                      width: '80px',
-                      padding: '0.25rem 0.5rem',
-                      border: '1px solid #cbd5e1',
-                      borderRadius: '4px'
-                    }}
-                  />
-                </label>
+                  <div>
+                    <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 500 }}>
+                      高度 (px)
+                    </label>
+                    <input
+                      type="number"
+                      placeholder="自动"
+                      value={settings.height || ''}
+                      onChange={(e) => setSettings(prev => ({
+                        ...prev,
+                        height: e.target.value ? parseInt(e.target.value) : undefined
+                      }))}
+                      style={{
+                        width: '100%',
+                        padding: '0.5rem',
+                        border: '1px solid #cbd5e1',
+                        borderRadius: '6px',
+                        fontSize: '0.875rem'
+                      }}
+                    />
+                  </div>
+                </div>
+
+                {/* 预设尺寸 */}
+                <div style={{ marginBottom: '1rem' }}>
+                  <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem', fontWeight: 500 }}>
+                    常用尺寸预设
+                  </label>
+                  <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                    {[
+                      { name: '1920×1080', width: 1920, height: 1080 },
+                      { name: '1280×720', width: 1280, height: 720 },
+                      { name: '800×600', width: 800, height: 600 },
+                      { name: '500×500', width: 500, height: 500 },
+                      { name: '清除', width: undefined, height: undefined }
+                    ].map((preset) => (
+                      <button
+                        key={preset.name}
+                        onClick={() => setSettings(prev => ({
+                          ...prev,
+                          width: preset.width,
+                          height: preset.height
+                        }))}
+                        style={{
+                          padding: '0.25rem 0.5rem',
+                          border: '1px solid #cbd5e1',
+                          borderRadius: '4px',
+                          background: 'white',
+                          cursor: 'pointer',
+                          fontSize: '0.75rem',
+                          color: preset.name === '清除' ? '#ef4444' : '#374151'
+                        }}
+                      >
+                        {preset.name}
+                      </button>
+                    ))}
+                  </div>
+                </div>
 
                 <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                   <input
@@ -321,10 +382,42 @@ export default function AdvancedConverter() {
                       maintainAspectRatio: e.target.checked
                     }))}
                   />
-                  <span>保持比例</span>
+                  <span style={{ fontSize: '0.875rem', fontWeight: 500 }}>保持宽高比</span>
                 </label>
-              </>
+
+                <div style={{ marginTop: '0.75rem', padding: '0.5rem', background: '#eff6ff', borderRadius: '4px', fontSize: '0.75rem', color: '#1e40af' }}>
+                  💡 提示: 
+                  {settings.maintainAspectRatio 
+                    ? ' 启用保持比例时，只需设置宽度或高度，另一个值会自动计算'
+                    : ' 关闭保持比例时，可以自由设置宽度和高度，图片可能会变形'
+                  }
+                </div>
+              </div>
             )}
+          </div>
+
+          {/* 当前设置摘要 */}
+          <div style={{
+            background: '#f0f9ff',
+            border: '1px solid #bae6fd',
+            borderRadius: '8px',
+            padding: '1rem'
+          }}>
+            <h4 style={{ fontSize: '0.875rem', fontWeight: 600, marginBottom: '0.5rem', color: '#0369a1' }}>
+              📋 当前设置
+            </h4>
+            <div style={{ fontSize: '0.75rem', color: '#0c4a6e', lineHeight: '1.4' }}>
+              <div>• 质量: {Math.round(settings.quality * 100)}%</div>
+              {settings.resize ? (
+                <>
+                  <div>• 尺寸调整: 启用</div>
+                  <div>• 目标尺寸: {settings.width || '自动'} × {settings.height || '自动'} px</div>
+                  <div>• 保持比例: {settings.maintainAspectRatio ? '是' : '否'}</div>
+                </>
+              ) : (
+                <div>• 尺寸调整: 保持原始尺寸</div>
+              )}
+            </div>
           </div>
         </div>
       </div>
